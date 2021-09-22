@@ -12,6 +12,8 @@
 
 using namespace std;
 
+    //I really cant understand how we can return a process or vector of processes
+    //maybe I miss something?
 // TODO: Return the system's CPU
 Processor& System::Cpu() { 
     LinuxParser::CpuUtilization();
