@@ -12,17 +12,20 @@
 
 using namespace std;
 
-    //I really cant understand how we can return a process or vector of processes
-    //maybe I miss something?
 // TODO: Return the system's CPU
-Processor& System::Cpu() { 
-    LinuxParser::CpuUtilization();
-    
+Processor& System::Cpu() {     
     return cpu_; 
     }
 
-// TODO: Return a container composed of the system's processes
+// Return a container composed of the system's processes
 vector<Process>& System::Processes() { 
+
+    vector<int> v_pids = LinuxParser::Pids();
+  //  int procCount = v_pids.size();
+    for(int &pid : v_pids){
+        processes_.emplace_back(Process(pid));
+    }
+    std::sort(processes_.begin(), processes_.end());
 
     return processes_; 
     }

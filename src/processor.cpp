@@ -28,5 +28,5 @@ float Processor::Utilization() {
         this->total = total;
         this->total_idle = total_idle;
 
-     return utiliz; 
+     return utiliz*100; 
      }
