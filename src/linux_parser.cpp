@@ -118,11 +118,8 @@ long int LinuxParser::UpTime() {
   if(file.is_open()){
     string first_word;
     file >> first_word;
-  ///  std::cout << "first " << first_word << std::endl;
     string cutted_string = first_word.substr(0, first_word.find_first_of('.'));
-   /// std::cout << "cutted " << cutted_string << std::endl;
-   long int res = stoi(cutted_string);
-  //  std::cout << "res " << res << std::endl;
+  long int res = stoi(cutted_string);
   file.close();
     return res;
   }
@@ -153,7 +150,6 @@ if(file.is_open()){
   int iIndex = 0;
   bool first = true;
 
- // std::cout << "before ";
   while ((iIndex < 10) && (file>>cpu_infos_v[iIndex]))
   {
     if (first)
@@ -169,10 +165,6 @@ if(file.is_open()){
     iIndex++;
   }
   file.close();
-  //for (string s : cpu_infos_v)
- // {
-  //  std::cout << "i "<< s << " ";
- // }
   return cpu_infos_v;
 
 }
@@ -188,7 +180,6 @@ if(file.is_open()){
   {
    if (line.substr(0, 9)==nProc)
    {
- ////    std::cout << "we found {" << line.substr(10) << "}";
     file.close();
      return stoi(line.substr(10));
    }
@@ -238,7 +229,7 @@ string LinuxParser::Ram(int pid) {
   string line;
    while (std::getline(file, line))
   {
-   if (line.substr(0, 7)==nVmSize)
+   if (line.substr(0, 6)==nVmSize)
    {
      std::istringstream lstr(line);
       string kb;
