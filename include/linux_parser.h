@@ -17,6 +17,17 @@ const std::string kMeminfoFilename{"/meminfo"};
 const std::string kVersionFilename{"/version"};
 const std::string kOSPath{"/etc/os-release"};
 const std::string kPasswordPath{"/etc/passwd"};
+// constants
+const std::string nMemTotal{"MemTotal:"};
+const std::string nMemFree{"MemFree:"};
+const std::string nMemAvail{"MemAvailable:"};
+const std::string nBuffer{"Buffers:"};
+const std::string nProc{"processes"};
+const std::string nProcRun{"procs_running"};
+// I using VmRSS instead of VmSize bc of https://man7.org/linux/man-pages/man5/proc.5.html
+const std::string nVmSize{"VmRSS:"};
+const std::string nUid{"Uid:"};
+const std::string nPrName{"PRETTY_NAME"};
 
 // System
 float MemoryUtilization();
@@ -41,10 +52,10 @@ enum CPUStates {
   kGuestNice_
 };
 std::vector<std::string> CpuUtilization();
-long Jiffies();
+/*long Jiffies();
 long ActiveJiffies();
 long ActiveJiffies(int pid);
-long IdleJiffies();
+long IdleJiffies();*/
 
 // Processes
 std::string Command(int pid);

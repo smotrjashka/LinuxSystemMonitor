@@ -27,7 +27,7 @@ string LinuxParser::OperatingSystem() {
       std::replace(line.begin(), line.end(), '"', ' ');
       std::istringstream linestream(line);
       while (linestream >> key >> value) {
-        if (key == "PRETTY_NAME") {
+        if (key == nPrName) {
           std::replace(value.begin(), value.end(), '_', ' ');
           return value;
         }
@@ -72,15 +72,15 @@ vector<int> LinuxParser::Pids() {
 
 // Read and return the system memory utilization
 float LinuxParser::MemoryUtilization() { 
-  unsigned long mem_total, mem_free, mem_avail, buffered_mem;
+  unsigned long mem_total, mem_free;  //for feaute  mem_avail, buffered_mem;
   std::ifstream file(kProcDirectory + kMeminfoFilename);
   if(file.is_open()){
       string line, str, value, last;
       map<string, unsigned long> mem_info_map;
-      mem_info_map.insert(std::make_pair("MemTotal:", 0));
-      mem_info_map.insert(std::make_pair("MemFree:", 0));
-      mem_info_map.insert(std::make_pair("MemAvailable:", 0));
-      mem_info_map.insert(std::make_pair("Buffers:", 0));
+      mem_info_map.insert({nMemTotal, 0});
+      mem_info_map.insert({nMemFree, 0});
+      mem_info_map.insert({nMemAvail, 0});
+      mem_info_map.insert({nBuffer, 0});
       int count = 0;
       while (std::getline(file, line) && count < 4)
       {
@@ -97,8 +97,8 @@ float LinuxParser::MemoryUtilization() {
         
       }
       file.close();
-      mem_total = mem_info_map.at("MemTotal:");
-      mem_free = mem_info_map.at("MemFree:");
+      mem_total = mem_info_map.at(nMemTotal);
+      mem_free = mem_info_map.at(nMemFree);
       if (mem_total != 0)
       {
       return 1 - mem_free/(float)mem_total;
@@ -133,17 +133,17 @@ long int LinuxParser::UpTime() {
 
 //I really didnt understand where I found this jiffies all of them
 // TODO: Read and return the number of jiffies for the system
-long LinuxParser::Jiffies() { return 0; }
+//long LinuxParser::Jiffies() { return 0; }
 
 // TODO: Read and return the number of active jiffies for a PID
 // REMOVE: [[maybe_unused]] once you define the function
-long LinuxParser::ActiveJiffies(int pid[[maybe_unused]]) { return 0; }
+//long LinuxParser::ActiveJiffies(int pid[[maybe_unused]]) { return 0; }
 
 // TODO: Read and return the number of active jiffies for the system
-long LinuxParser::ActiveJiffies() { return 0; }
+//long LinuxParser::ActiveJiffies() { return 0; }
 
 // TODO: Read and return the number of idle jiffies for the system
-long LinuxParser::IdleJiffies() { return 0; }
+//long LinuxParser::IdleJiffies() { return 0; }
 
 // Read and return CPU utilization
 vector<string> LinuxParser::CpuUtilization() { 
@@ -186,7 +186,7 @@ if(file.is_open()){
   string line, name, value;
   while (std::getline(file, line))
   {
-   if (line.substr(0, 9)=="processes")
+   if (line.substr(0, 9)==nProc)
    {
  ////    std::cout << "we found {" << line.substr(10) << "}";
     file.close();
@@ -206,7 +206,7 @@ if(file.is_open()){
   string line, name, value;
   while (std::getline(file, line))
   {
-   if (line.substr(0, 13)=="procs_running")
+   if (line.substr(0, 13)==nProcRun)
    {
     file.close();
      return stoi(line.substr(14));
@@ -238,7 +238,7 @@ string LinuxParser::Ram(int pid) {
   string line;
    while (std::getline(file, line))
   {
-   if (line.substr(0, 7)=="VmSize:")
+   if (line.substr(0, 7)==nVmSize)
    {
      std::istringstream lstr(line);
       string kb;
@@ -264,7 +264,7 @@ string LinuxParser::Uid(int pid) {
     string line;
     while (std::getline(file, line))
   {
-   if (line.substr(0, 4)=="Uid:")
+   if (line.substr(0, 4)==nUid)
    {
      std::istringstream lstr(line);
       string uid;

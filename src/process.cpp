@@ -24,7 +24,16 @@ float Process::CpuUtilization() {
     }
 
 // Return the command that generated this process
-string Process::Command() { return LinuxParser::Command(Pid()); }
+string Process::Command() { 
+    string fullCommand = LinuxParser::Command(Pid()); 
+    if (fullCommand.length()>=50)
+    {
+        fullCommand = fullCommand.substr(0, 47) + "...";
+    }
+    
+    
+    return fullCommand;
+    }
 
 // Return this process's memory utilization
 string Process::Ram() { return LinuxParser::Ram(Pid()); }

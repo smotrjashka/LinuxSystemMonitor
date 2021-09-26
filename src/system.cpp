@@ -20,10 +20,11 @@ Processor& System::Cpu() {
 // Return a container composed of the system's processes
 vector<Process>& System::Processes() { 
 
+    processes_.clear();
     vector<int> v_pids = LinuxParser::Pids();
   //  int procCount = v_pids.size();
     for(int &pid : v_pids){
-        processes_.emplace_back(Process(pid));
+        processes_.emplace_back(pid);
     }
     std::sort(processes_.begin(), processes_.end());
 

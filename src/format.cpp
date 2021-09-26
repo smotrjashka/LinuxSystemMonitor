@@ -1,16 +1,38 @@
 #include <string>
+#include <chrono>
+#include <iostream>
+#include <sstream>
+#include <iomanip>
 
 #include "format.h"
 
-using std::string;
+using namespace std;
 
 // Complete this helper function
 // INPUT: Long int measuring seconds
 // OUTPUT: HH:MM:SS
-// REMOVE: [[maybe_unused]] once you define the function
-string Format::ElapsedTime(long int seconds) { 
-    int hours = seconds/3600;
-    int minutes = (seconds%3600)/60;
-    seconds = seconds%60;
-    return std::to_string(hours) + ":" + std::to_string(minutes) + ":" + std::to_string(seconds); 
-    }
+string Format::ElapsedTime(long int sec) { 
+  
+  chrono::seconds seconds{sec};
+
+  chrono::hours hours =
+      chrono::duration_cast<chrono::hours>(seconds);
+
+  seconds -= chrono::duration_cast<chrono::seconds>(hours);
+
+  chrono::minutes minutes =
+      chrono::duration_cast<chrono::minutes>(seconds);
+
+  seconds -= chrono::duration_cast<chrono::seconds>(minutes);
+
+  stringstream ss;
+
+  ss << setw(2) << setfill('0') << hours.count()     // HH
+     << setw(1) << ":"                                    // :
+     << setw(2) << setfill('0') << minutes.count()   // MM
+     << setw(1) << ":"                                    // :
+     << setw(2) << setfill('0') << seconds.count();  // SS
+
+  return ss.str();
+  
+   }
